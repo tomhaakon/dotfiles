@@ -8,6 +8,7 @@ Plug 'StanAngeloff/php.vim'
 Plug 'preservim/nerdtree'
 Plug 'morhetz/gruvbox'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'qbbr/vim-twig'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -21,7 +22,8 @@ set expandtab
 autocmd vimenter * ++nested colorscheme gruvbox
 set background=dark
 "set background=light
-
+set nowrap
+set number
 
 
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
