@@ -5,6 +5,8 @@ promptinit
 prompt adam1
 
 alias v='vim'
+alias restartweb='sudo systemctl restart php8.1-fpm.service && sudo systemctl restart nginx.service && echo "restart ok"
+
 
 # Start tmux if not already running
 [ -z "$TMUX" ] && command -v tmux &> /dev/null && tmux
@@ -13,6 +15,8 @@ alias v='vim'
 alias ls='exa -h --group-directories-first --color=auto'
 alias ll='exa -a --group-directories-first --color=auto'
 #alias ls='gls --color=auto --group-directories-first'
+
+
 
 setopt histignorealldups sharehistory
 
