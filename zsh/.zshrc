@@ -4,11 +4,14 @@ autoload -Uz promptinit
 promptinit
 prompt adam1
 alias t='tmux'
+alias v='vim'
+
 alias psdev='cd /var/www/html/psdev'
 alias web='cd /var/www/html/'
-alias v='vim'
+
 alias restartweb='sudo systemctl restart php8.1-fpm.service && sudo systemctl restart nginx.service && echo "restart ok"'
 
+source ~/.dotfiles/.zshrc_aliases
 # Start tmux if not already running
 # 
 [ -z "$TMUX" ] && command -v tmux &> /dev/null && tmux
