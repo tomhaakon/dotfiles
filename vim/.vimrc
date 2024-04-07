@@ -45,12 +45,10 @@ Plug 'OmniSharp/omnisharp-vim'
 
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
-" List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 filetype indent plugin on
 
 "let g:OmniSharp_msbuildlocator = 'UseBundled'
-"let g:OmniSharp_server_path = '/home/tomhaakon/.cache/omnisharp-vim/omnisharp-roslyn/run'
 let g:OmniSharp_server_use_net6 = 1
 "let g:OmniSharp_server_stdio = 1
 "let g:OmniSharp_server_use_mono = 1
@@ -61,8 +59,6 @@ set shiftwidth=4
 " Insert 4 spaces when pressing tab instead of the tab character
 set expandtab
 
-" set command til Layoutdev, -> :command! SetCustomLayout call
-" MyCustomLayout()
 function! Layoutdev()
   silent only
 
@@ -90,11 +86,16 @@ nnoremap <F1> :Files<CR>
 "nnoremap <leader>j :bn<CR>
 "nnoremap <C-k> :bp<CR>
 
-nnoremap <leader>j :bn<CR>
-nnoremap <leader>k :bp<CR>
+"nnoremap <leader>j :bn<CR>
+"nnoremap <leader>k :bp<CR>
 nnoremap <leader>f :Files<CR>
- let g:OmniSharp_selector_ui = 'fzf'   
- let g:OmniSharp_selector_findusages = 'fzf'
+let g:OmniSharp_selector_ui = 'fzf'   
+let g:OmniSharp_selector_findusages = 'fzf'
+
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
 
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
@@ -141,21 +142,22 @@ endif
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+"nmap <silent> [g <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+"nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gd :OmniSharpGotoDefinition<CR>
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
 "nmap <silent> gd :OmniSharpGotoDefinition<CR>
 "nmap <silent> gi :OmniSharpFindImplementations<CR>
-"nmap <silent> gr :OmniSharpFindUsages<CR>
+nmap <silent> gr :OmniSharpFindUsages<CR>
 
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call ShowDocumentation()<CR>
+"nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
@@ -185,8 +187,8 @@ augroup end
 
 " Applying code actions to the selected code block
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+"xmap <leader>a  <Plug>(coc-codeaction-selected)
+"nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying code actions at the cursor position
 "nmap <leader>ac  <Plug>(coc-codeaction-cursor)

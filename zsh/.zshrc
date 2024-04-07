@@ -4,13 +4,14 @@ autoload -Uz promptinit
 promptinit
 prompt adam1
 alias t='tmux'
-alias v='vim'
+#alias v='vim'
+
+alias countlines='count_lines_in_files_recursive'
 
 alias psdev='cd /var/www/html/psdev'
 alias web='cd /var/www/html/'
 
 alias restartweb='sudo systemctl restart php8.1-fpm.service && sudo systemctl restart nginx.service && echo "restart ok"'
-
 source ~/.dotfiles/.zshrc_aliases
 # Start tmux if not already running
 # 
@@ -21,14 +22,22 @@ alias ls='exa -h --group-directories-first --color=auto'
 alias ll='exa -a --group-directories-first --color=auto'
 #alias ls='gls --color=auto --group-directories-first'
 
+function count_lines_in_files_recursive() {
+    local target_dir="${1:-.}" # Use the first argument as the directory, default to current directory if none provided
+    find "$target_dir" -type f -exec wc -l {} + | awk '{total += $1} END{print total}'
+}
+
 #sette vim farger
 #source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
 
 setopt histignorealldups sharehistory
 
 # Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
-set -g mouse on
+#bindkey -e
+bindkey -v
+bindkey -M vicmd 'v' edit-command-line
+
+#set -g mouse on
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
 HISTSIZE=1000
 SAVEHIST=1000
