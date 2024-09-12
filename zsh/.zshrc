@@ -6,7 +6,10 @@ prompt adam1
 alias t='tmux'
 #alias v='vim'
 
+
 alias countlines='count_lines_in_files_recursive'
+
+alias banan='sudo tail -f /var/log/mysql/mysql.log | grep --color -E "banan"'
 
 alias psdev='cd /var/www/html/psdev'
 alias web='cd /var/www/html/'
@@ -15,7 +18,7 @@ alias restartweb='sudo systemctl restart php8.1-fpm.service && sudo systemctl re
 source ~/.dotfiles/.zshrc_aliases
 # Start tmux if not already running
 # 
-[ -z "$TMUX" ] && command -v tmux &> /dev/null && tmux
+#[ -z "$TMUX" ] && command -v tmux &> /dev/null && tmux
 
 # Colorized ls
 alias ls='exa -h --group-directories-first --color=auto'
@@ -70,5 +73,45 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #flameshot
-export QT_QPA_PLATFORM=xcb
+export QT_QPA_PLATFORM=wayland
 
+find_console () {
+    local dir=$(pwd)
+
+    while [[ "$dir" != "/" ]]; do
+        if [[ -f "$dir/bin/console" ]]; then
+            echo "$dir/bin/console"
+            return
+        fi
+        dir=$(dirname "$dir")
+    done
+
+    echo "Error: Could not find bin/console in the file hierarchy."
+    return 1
+}
+
+# I stedet for å gå til rotmappen av prestashop/symfony og kjøre bin/console, kan du bruke denne funksjonen hvor som helst. Eksempel binconsole prestashop:module install mymodule
+binconsole() {
+    local console_path=$(find_console)
+
+    if [[ $? -eq 0 ]]; then
+        sudo -u www-data php "$console_path" "$@"
+    else
+        echo "Error: bin/console not found. Are you in a PrestaShop project?"
+        return 1
+    fi
+}
+
+psmod() { # bruk: mod install|uninstall|reset i en modulmappe for å slippe å gå til rot og kjøre bin/console prestashop:module install mymodule
+    DIRNAME=$(basename "$(pwd)")
+
+    # Sjekk om vi er i en PrestaShop-modulmappe
+    if [[ ! -f "$DIRNAME.php" && ! -f "config.xml" ]]; then
+        echo "Error: You are not in a PrestaShop module directory."
+        return 1
+    fi
+
+    # Utfør handlingen
+    ACTION=$1
+    binconsole prestashop:module "$ACTION" "$DIRNAME"
+}

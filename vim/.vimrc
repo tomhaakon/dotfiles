@@ -6,6 +6,7 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " universal defaults
 Plug 'tpope/vim-sensible' 
 "
+Plug 'beanworks/vim-phpfmt'
 "
 " gruvbox er theme
 Plug 'morhetz/gruvbox'
@@ -16,13 +17,13 @@ Plug 'junegunn/seoul256.vim'
 Plug 'tpope/vim-fugitive'
 "
 " Vim php syntax. Arkivert siden 2020
-"Plug 'StanAngeloff/php.vim'
+Plug 'StanAngeloff/php.vim'
 
 " completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " twig syntax og snippets
-"Plug 'qbbr/vim-twig'
+Plug 'qbbr/vim-twig'
 
 " javascript syntax og hightlighting
 Plug 'yuezk/vim-js'
@@ -42,11 +43,19 @@ Plug 'jeetsukumaran/vim-buffergator'
 
 " c# smart plug
 Plug 'OmniSharp/omnisharp-vim'
+Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
 call plug#end()
 filetype indent plugin on
+
+let g:phpfmt_php_bin = '/usr/bin/php'
+let g:phpfmt_autosave = 1
+let g:phpfmt_indent_width_space = 4
+let g:phpfmt_php_cs_fixer_config_file = '~/.php_cs' 
+autocmd BufWritePre *.php :PhpFmt
+let g:phpfmt_args = '--standard=PSR2'
 
 "let g:OmniSharp_msbuildlocator = 'UseBundled'
 let g:OmniSharp_server_use_net6 = 1
@@ -76,12 +85,14 @@ endfunction
 command! Layoutdev call Layoutdev()
 
 autocmd vimenter * ++nested colorscheme gruvbox
+
 set background=dark
 "set background=light
 set nowrap
 set number
 set rnu
 autocmd InsertLeave * write
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 nnoremap <F1> :Files<CR>
 "nnoremap <leader>j :bn<CR>
 "nnoremap <C-k> :bp<CR>
@@ -89,6 +100,10 @@ nnoremap <F1> :Files<CR>
 "nnoremap <leader>j :bn<CR>
 "nnoremap <leader>k :bp<CR>
 nnoremap <leader>f :Files<CR>
+nnoremap <Insert> :set invpaste<CR>
+
+
+        
 let g:OmniSharp_selector_ui = 'fzf'   
 let g:OmniSharp_selector_findusages = 'fzf'
 
